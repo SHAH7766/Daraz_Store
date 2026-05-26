@@ -7,7 +7,7 @@ connectDB();
 const app = express();
 const allowedOrigins = [
     'https://daraz-store.vercel.app',
-    'https://darazstore.vercel.app/',
+    'https://darazstore.vercel.app',
     'http://localhost:5173',
     'http://localhost:5174',
 ];
@@ -52,8 +52,9 @@ app.use((err, req, res, next) => {
     });
 });
 const port = process.env.PORT || process.env.port || 8000;
-const server = app.listen(port, () => {
-    console.log(`Daraz order tracker running on http://localhost:${port}`);
+const host = '0.0.0.0';
+const server = app.listen(port, host, () => {
+    console.log(`Daraz order tracker running on http://${host}:${port}`);
 });
 
 server.on('error', (error) => {
