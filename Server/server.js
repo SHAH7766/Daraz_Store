@@ -5,7 +5,22 @@ import { connectDB } from './Config/Database.js';
 import router from './Routes/ProductRoutes.js';
 connectDB();
 const app = express();
-app.use(cors());
+const allowedOrigins = [
+    'https://darazstore.vercel.app',
+    'http://localhost:5174',
+    'http://localhost:5173',
+];
+
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+            return;
+        }
+
+        callback(new Error('Not allowed by CORS'));
+    },
+}));
 app.use(express.json());
 app.use('/api/product', router);
 app.use((err, req, res, next) => {
