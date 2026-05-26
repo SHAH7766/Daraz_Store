@@ -51,17 +51,8 @@ app.use((err, req, res, next) => {
         message: isFileSizeError ? 'Image must be smaller than 5MB' : err.message || 'Upload failed',
     });
 });
-const port = process.env.PORT || process.env.port || 8000;
-const host = '0.0.0.0';
-const server = app.listen(port, host, () => {
-    console.log(`Daraz order tracker running on http://${host}:${port}`);
-});
 
-server.on('error', (error) => {
-    if (error.code === 'EADDRINUSE') {
-        console.error(`Port ${port} is already in use. Close the other backend terminal or run: npx kill-port ${port}`);
-        process.exit(1);
-    }
-
-    throw error;
+const port = process.env.PORT || 8000;
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
