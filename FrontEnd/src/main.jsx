@@ -25,9 +25,7 @@ import {
 import './styles.css';
 
 const rawApiBaseUrl = import.meta.env.VITE_API_BASE_URL || '/api/product';
-const API_BASE_URL = rawApiBaseUrl.replace(/\/$/, '').endsWith('/api/product')
-  ? rawApiBaseUrl.replace(/\/$/, '')
-  : `${rawApiBaseUrl.replace(/\/$/, '')}/api/product`;
+const API_BASE_URL = normalizeApiBaseUrl(rawApiBaseUrl);
 
 const statusOptions = [
   { value: 'Shipped', label: 'Shipped', icon: Truck },
@@ -585,6 +583,14 @@ function useObjectUrl(file) {
 
 function numeric(value) {
   return Number(value) || 0;
+}
+
+function normalizeApiBaseUrl(value) {
+  const withoutTrailingSlash = value.replace(/\/$/, '');
+  return withoutTrailingSlash
+    .replace(/\/api\/product\/products$/, '/api/product')
+    .replace(/\/products$/, '')
+    .replace(/^(?!.*\/api\/product$)(.*)$/, '$1/api/product');
 }
 
 function quantityOf(product) {

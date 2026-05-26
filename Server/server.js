@@ -6,16 +6,22 @@ import router from './Routes/ProductRoutes.js';
 connectDB();
 const app = express();
 const allowedOrigins = [
-    'https://darazstore.vercel.app',
-    'http://localhost:5174',
+    'https://daraz-store.vercel.app',
+    'https://darazstore.vercel.app/',
     'http://localhost:5173',
+    'http://localhost:5174',
 ];
+const vercelPreviewOriginRegex = /^https:\/\/[a-z0-9-]+\.vercel\.app$/i;
 const normalizeOrigin = (origin) => origin?.replace(/\/$/, '');
 const corsOptions = {
     origin: (origin, callback) => {
         const normalizedOrigin = normalizeOrigin(origin);
 
-        if (!normalizedOrigin || allowedOrigins.includes(normalizedOrigin)) {
+        if (
+            !normalizedOrigin ||
+            allowedOrigins.includes(normalizedOrigin) ||
+            vercelPreviewOriginRegex.test(normalizedOrigin)
+        ) {
             callback(null, true);
             return;
         }
