@@ -24,7 +24,10 @@ import {
 } from 'lucide-react';
 import './styles.css';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/product';
+const rawApiBaseUrl = import.meta.env.VITE_API_BASE_URL || '/api/product';
+const API_BASE_URL = rawApiBaseUrl.replace(/\/$/, '').endsWith('/api/product')
+  ? rawApiBaseUrl.replace(/\/$/, '')
+  : `${rawApiBaseUrl.replace(/\/$/, '')}/api/product`;
 
 const statusOptions = [
   { value: 'Shipped', label: 'Shipped', icon: Truck },

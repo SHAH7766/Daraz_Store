@@ -33,6 +33,7 @@ app.get('/', (req, res) => {
     res.status(200).json({ message: 'Daraz Store API is running' });
 });
 app.use('/api/product', router);
+app.use('/', router);
 app.use((err, req, res, next) => {
     if (!err) {
         next();
@@ -44,7 +45,7 @@ app.use((err, req, res, next) => {
         message: isFileSizeError ? 'Image must be smaller than 5MB' : err.message || 'Upload failed',
     });
 });
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || process.env.port || 8000;
 const server = app.listen(port, () => {
     console.log(`Daraz order tracker running on http://localhost:${port}`);
 });
