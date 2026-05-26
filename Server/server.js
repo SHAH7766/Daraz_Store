@@ -10,18 +10,28 @@ const allowedOrigins = [
     'http://localhost:5174',
     'http://localhost:5173',
 ];
-
-app.use(cors({
+const normalizeOrigin = (origin) => origin?.replace(/\/$/, '');
+const corsOptions = {
     origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
+        const normalizedOrigin = normalizeOrigin(origin);
+
+        if (!normalizedOrigin || allowedOrigins.includes(normalizedOrigin)) {
             callback(null, true);
             return;
         }
 
         callback(new Error('Not allowed by CORS'));
     },
-}));
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type'],
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(express.json());
+app.get('/', (req, res) => {
+    res.status(200).json({ message: 'Daraz Store API is running' });
+});
 app.use('/api/product', router);
 app.use((err, req, res, next) => {
     if (!err) {
