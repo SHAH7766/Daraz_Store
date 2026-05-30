@@ -30,6 +30,9 @@ router.put(
     ]),
     updateProduct
 );
+router.get('/',function(req,res){
+    res.send('Hello World');
+})
 
 // Delete a product
 router.delete('/products/:id', deleteProduct);
